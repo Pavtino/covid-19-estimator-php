@@ -134,9 +134,8 @@ function covid19ImpactEstimator($data)
    
 
 }
- /*In this section we get input data 
-  *from file
-  */
+ 
+ 
 // input data
 $data = '{
  	"region": 
@@ -154,4 +153,5 @@ $data = '{
 
 //display results
 echo covid19ImpactEstimator($data);
+
 ?>
