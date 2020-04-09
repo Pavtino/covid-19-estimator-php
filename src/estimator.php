@@ -2,7 +2,7 @@
 /**
  *
  * @author Mbalkam Martin <pavtino@gmail.com>
- * @package covid-19-estimator
+ * @package covid-19
  * @version 1.0
  * @link http://www.github.com/Pavtino
  */
@@ -15,7 +15,7 @@
  * @param integer $timeToElapse it is the number of periodType
  * @return integer
  */
-function numberOfDays($periodType,$timeToElapse)
+function numberOfDays( $periodType,$timeToElapse)
 {
 	$days=0;
 	switch($periodType) {
@@ -39,7 +39,7 @@ function numberOfDays($periodType,$timeToElapse)
  *
  * This function is the main function, it makes an estimation of 
  * the  impact of covid-19 according to a determined period
- * @param JSON $data  is a json object 
+ * @param string $data  is a json formatted data 
  * @return JSON
  */
 
@@ -58,7 +58,7 @@ function covid19ImpactEstimator($data)
 
     try
     {
-        //Extract data from json object to associative array
+       //Extract data from json object to associative array
       $data=json_decode($data,true);
 
       //Get the last JSON error
@@ -142,8 +142,6 @@ $url = 'data.json';
 // put the contents of the file into a variable
 $data = file_get_contents($url); 
 
-//put result of estimation into variable
- $outPutResults=covid19ImpactEstimator($data);
- //display results
-  echo $outPutResults;
+//display results
+// echo covid19ImpactEstimator($data);
 ?>
