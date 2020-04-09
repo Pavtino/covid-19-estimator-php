@@ -137,11 +137,21 @@ function covid19ImpactEstimator($data)
  /*In this section we get input data 
   *from file
   */
-// path to our JSON file
-$url = 'data.json'; 
-// put the contents of the file into a variable
-$data = file_get_contents($url); 
+// input data
+$data = '{
+ 	"region": 
+      {"name": "Africa",
+      "avgAge": 19.7,
+      "avgDailyIncomeInUSD": 5,
+      "avgDailyIncomePopulation": 0.71
+      },
+    "periodType": "days",
+    "timeToElapse": 58,
+    "reportedCases": 674,
+    "population": 66622705,
+    "totalHospitalBeds": 1380614
+}'; 
 
 //display results
-// echo covid19ImpactEstimator($data);
+echo covid19ImpactEstimator($data);
 ?>
