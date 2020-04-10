@@ -92,26 +92,26 @@ function covid19ImpactEstimator($data)
       
 
      //calculate of  severe Cases By Requested Time impact and severe Cases By Requested Time severe impact
-	  $impact["severeCasesByRequestedTime"]=round($impact["infectionsByRequestedTime"]*0.15);
-	  $severeImpact["severeCasesByRequestedTime"]=round($severeImpact["infectionsByRequestedTime"]*0.15);
+	  $impact["severeCasesByRequestedTime"]=(int)($impact["infectionsByRequestedTime"]*0.15);
+	  $severeImpact["severeCasesByRequestedTime"]=(int)($severeImpact["infectionsByRequestedTime"]*0.15);
 
      //calculate of  hospital Beds By Requested Time impact and  hospital Beds By RequestedTime severe Impact
-	  $impact["hospitalBedsByRequestedTime"]=round($totalHospitalBeds*0.35-$impact["severeCasesByRequestedTime"]);
-	  $severeImpact["hospitalBedsByRequestedTime"]=round($totalHospitalBeds*0.35-$severeImpact["severeCasesByRequestedTime"]);
+	  $impact["hospitalBedsByRequestedTime"]=(int)($totalHospitalBeds*0.35-$impact["severeCasesByRequestedTime"]);
+	  $severeImpact["hospitalBedsByRequestedTime"]=(int)($totalHospitalBeds*0.35-$severeImpact["severeCasesByRequestedTime"]);
 
       //calculate of  cases For ICU By Requested Time impact and cases For ICU By RequestedTime severe impact
-	  $impact["casesForICUByRequestedTime"]=round($impact["infectionsByRequestedTime"]*0.05);
-	  $severeImpact["casesForICUByRequestedTime"]=round($severeImpact["infectionsByRequestedTime"]*0.05);
+	  $impact["casesForICUByRequestedTime"]=(int)($impact["infectionsByRequestedTime"]*0.05);
+	  $severeImpact["casesForICUByRequestedTime"]=(int)($severeImpact["infectionsByRequestedTime"]*0.05);
 
       //calculate of cases For Ventilators By Requested Time impact  and  cases For Ventilators By RequestedTime severe impact
-	  $impact["casesForVentilatorsByRequestedTime"]=round($impact["infectionsByRequestedTime"]*0.02);
-	  $severeImpact["casesForVentilatorsByRequestedTime"]=round($severeImpact["infectionsByRequestedTime"]*0.02);
+	  $impact["casesForVentilatorsByRequestedTime"]=(int)($impact["infectionsByRequestedTime"]*0.02);
+	  $severeImpact["casesForVentilatorsByRequestedTime"]=(int)($severeImpact["infectionsByRequestedTime"]*0.02);
 
       //calculate of  dollars In Flight impact 
-	  $impact["dollarsInFlight"]=number_format((float)($impact["infectionsByRequestedTime"]*$data["region"]["avgDailyIncomePopulation"]*$data["region"]["avgDailyIncomeInUSD"]*$nbDays), 2, '.', '');
+	  $impact["dollarsInFlight"]=round($impact["infectionsByRequestedTime"]*$data["region"]["avgDailyIncomePopulation"]*$data["region"]["avgDailyIncomeInUSD"]*$nbDays, 2);
 
 	   //calculate of  dollars In Flight severe impact 
-	   $severeImpact["dollarsInFlight"]=number_format((float)($severeImpact["infectionsByRequestedTime"]*$data["region"]["avgDailyIncomePopulation"]*$data["region"]["avgDailyIncomeInUSD"]*$nbDays), 2, '.', '');
+	   $severeImpact["dollarsInFlight"]=round($severeImpact["infectionsByRequestedTime"]*$data["region"]["avgDailyIncomePopulation"]*$data["region"]["avgDailyIncomeInUSD"]*$nbDays,2);
 
 	   // contruction of output result with input data, impact and severe impact
 	   $result=array("data"=>$data,"impact"=>$impact,"severeImpact"=>$severeImpact);
