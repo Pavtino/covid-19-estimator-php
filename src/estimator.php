@@ -108,10 +108,10 @@ function covid19ImpactEstimator($data)
 	  $severeImpact["casesForVentilatorsByRequestedTime"]=(int)($severeImpact["infectionsByRequestedTime"]*0.02);
 
       //calculate of  dollars In Flight impact 
-	  $impact["dollarsInFlight"]=round($impact["infectionsByRequestedTime"]*$data["region"]["avgDailyIncomePopulation"]*$data["region"]["avgDailyIncomeInUSD"]*$nbDays, 2);
+	  $impact["dollarsInFlight"]=(int)(($impact["infectionsByRequestedTime"]*$data["region"]["avgDailyIncomePopulation"]*$data["region"]["avgDailyIncomeInUSD"])/$nbDays);
 
 	   //calculate of  dollars In Flight severe impact 
-	   $severeImpact["dollarsInFlight"]=round($severeImpact["infectionsByRequestedTime"]*$data["region"]["avgDailyIncomePopulation"]*$data["region"]["avgDailyIncomeInUSD"]*$nbDays,2);
+	   $severeImpact["dollarsInFlight"]=(int)(($severeImpact["infectionsByRequestedTime"]*$data["region"]["avgDailyIncomePopulation"]*$data["region"]["avgDailyIncomeInUSD"])/$nbDays);
 
 	   // contruction of output result with input data, impact and severe impact
 	   $result=array("data"=>$data,"impact"=>$impact,"severeImpact"=>$severeImpact);
