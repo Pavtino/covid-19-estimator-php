@@ -84,8 +84,8 @@ function covid19ImpactEstimator($data)
 	  $severeImpact["severeCasesByRequestedTime"]=$severeImpact["infectionsByRequestedTime"]*0.15;
 
      //calculate of  hospital Beds By Requested Time impact and  hospital Beds By RequestedTime severe Impact
-	  $impact["hospitalBedsByRequestedTime"]=$totalHospitalBeds*0.35-$impact["severeCasesByRequestedTime"];
-	  $severeImpact["hospitalBedsByRequestedTime"]=$totalHospitalBeds*0.35-$severeImpact["severeCasesByRequestedTime"];
+	  $impact["hospitalBedsByRequestedTime"]=round($totalHospitalBeds*0.35-$impact["severeCasesByRequestedTime"]);
+	  $severeImpact["hospitalBedsByRequestedTime"]=round($totalHospitalBeds*0.35-$severeImpact["severeCasesByRequestedTime"]);
 
       //calculate of  cases For ICU By Requested Time impact and cases For ICU By RequestedTime severe impact
 	  $impact["casesForICUByRequestedTime"]=$impact["infectionsByRequestedTime"]*0.05;
