@@ -8,32 +8,7 @@
  */
 
 
-/**
- *
- * This function calculates the time requested
- * @param string  $periodType type of periode, it can be days,weeks or months
- * @param integer $timeToElapse it is the number of periodType
- * @return integer
- */
-function numberOfDays( $periodType,$timeToElapse)
-{
-	$days=0;
-	switch($periodType) {
-       case "days":
-         $days = $timeToElapse;
-         break;
-       case "weeks":
-         $days=$timeToElapse*7;
-         break;
-       case "months":
-         $days=$timeToElapse*30;
-         break;
-       default:
-         $days = $timeToElapse;
-         break;
-    }
-    return $days;
-}
+
 
 /**
  *
@@ -58,20 +33,9 @@ function covid19ImpactEstimator($data)
 
     try
     {
-       //Extract data from json object to associative array
-      $data=json_decode($data,true);
-
-      //Get the last JSON error
-      $jsonError = json_last_error();
-
-       //If an error exists.
-       if($jsonError!= JSON_ERROR_NONE)
-       {
-         throw new Exception('Could not decode JSON!Verify if:<br/> there is not Unexpected control character found <br/>Or if it is Malformed JSON');
-       }
-
+       
       //get period type(days, weeks or months)
-	  $periodeType=$data["periodType"];
+	  $periodType=$data["periodType"];
 
       //number of periodType requested 
 	  $timeToElapse=$data["timeToElapse"];
@@ -86,18 +50,34 @@ function covid19ImpactEstimator($data)
 	  $totalHospitalBeds=$data["totalHospitalBeds"];
 
 	  //number of days requested
-	  $nbDays=numberOfDays($periodeType,$timeToElapse);
+	 // $nbDays=numberOfDays($periodeType,$timeToElapse);
 
       //get number of set in a period $nbDays
-      $setOfday=(int)($nbDays/3);
+      //$setOfday=(int)($nbDays/3);
 
 	  //calculate of infected and severe infected 
 	  $impact["currentlyInfected"]=$reportedCases*10;
 	  $severeImpact["currentlyInfected"]=$reportedCases*50;
+
+	  //calculate of infections By Requested Time and servere  infections By Requested Time    
    
-      //calculate of infections By Requested Time and servere  infections By Requested Time
-	  $impact["infectionsByRequestedTime"]=$impact["currentlyInfected"]*pow(2,$setOfday);
-	  $severeImpact["infectionsByRequestedTime"]=$severeImpact["currentlyInfected"]*pow(2,$setOfday);
+      switch($periodType) {
+          case "weeks":
+           $timeToElapse=$timeToElapse*7;
+           $impact["infectionsByRequestedTime"]=$impact["currentlyInfected"]*pow(2,((int)($timeToElapse/3)));
+	       $severeImpact["infectionsByRequestedTime"]=$severeImpact["currentlyInfected"]*pow(2,((int)($timeToElapse/3)));
+           break;
+          case "months":
+           $timeToElapse=$timeToElapse*30;
+           $impact["infectionsByRequestedTime"]=$impact["currentlyInfected"]*pow(2,((int)($timeToElapse/3)));
+	       $severeImpact["infectionsByRequestedTime"]=$severeImpact["currentlyInfected"]*pow(2,((int)($timeToElapse/3)));
+           break;
+          default:
+           $impact["infectionsByRequestedTime"]=$impact["currentlyInfected"]*pow(2,((int)($timeToElapse/3)));
+	       $severeImpact["infectionsByRequestedTime"]=$severeImpact["currentlyInfected"]*pow(2,((int)($timeToElapse/3)));
+           break;
+        }
+      
 
      //calculate of  severe Cases By Requested Time impact and severe Cases By Requested Time severe impact
 	  $impact["severeCasesByRequestedTime"]=$impact["infectionsByRequestedTime"]*0.15;
@@ -116,13 +96,13 @@ function covid19ImpactEstimator($data)
 	  $severeImpact["casesForVentilatorsByRequestedTime"]=$severeImpact["infectionsByRequestedTime"]*0.02;
 
       //calculate of  dollars In Flight impact 
-	  $impact["dollarsInFlight"]=$impact["infectionsByRequestedTime"]*$data["region"]["avgDailyIncomePopulation"]*$data["region"]["avgDailyIncomeInUSD"]*$nbDays;
+	  $impact["dollarsInFlight"]=$impact["infectionsByRequestedTime"]*$data["region"]["avgDailyIncomePopulation"]*$data["region"]["avgDailyIncomeInUSD"]*$timeToElapse;
 
 	   //calculate of  dollars In Flight severe impact 
-	   $severeImpact["dollarsInFlight"]=$severeImpact["infectionsByRequestedTime"]*$data["region"]["avgDailyIncomePopulation"]*$data["region"]["avgDailyIncomeInUSD"]*$nbDays;
+	   $severeImpact["dollarsInFlight"]=$severeImpact["infectionsByRequestedTime"]*$data["region"]["avgDailyIncomePopulation"]*$data["region"]["avgDailyIncomeInUSD"]*$timeToElapse;
 
 	   // contruction of output result with input data, impact and severe impact
-	   $result=["data"=>$data,"impact"=>$impact,"severeImpact"=>$severeImpact];
+	   $result=array("data"=>$data,"impact"=>$impact,"severeImpact"=>$severeImpact);
     }
     catch(Exception $e){
 
@@ -151,6 +131,16 @@ $data = '{
     "totalHospitalBeds": 1380614
 }'; 
 
+//Extract data from json object to associative array
+      $data=json_decode($data,true);
+      //Get the last JSON error
+      $jsonError = json_last_error();
+
+       //If an error exists.
+       if($jsonError!= JSON_ERROR_NONE)
+       {
+         throw new Exception('Could not decode JSON!Verify if:<br/> there is not Unexpected control character found <br/>Or if it is Malformed JSON');
+       }
 //display results
 echo covid19ImpactEstimator($data);
 
