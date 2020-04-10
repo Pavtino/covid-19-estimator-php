@@ -110,7 +110,7 @@ function covid19ImpactEstimator($data)
     }
    
 
-	return json_encode($result);
+	return $result;
    
 
 }
@@ -142,6 +142,6 @@ $data = '{
          throw new Exception('Could not decode JSON!Verify if:<br/> there is not Unexpected control character found <br/>Or if it is Malformed JSON');
        }
 //display results
-echo covid19ImpactEstimator($data);
+echo json_encode(covid19ImpactEstimator($data));
 
 ?>
